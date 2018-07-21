@@ -1,15 +1,18 @@
 var urlName = document.URL
 var urlSplit = urlName.split('/')
 var pageName = urlSplit.pop()
-var pageSplit = pageName.split('.')
-var fileType = pageSplit[pageSplit.length-1]
+//var pageSplit = pageName.split('.')
+//var fileType = pageSplit[pageSplit.length-1]
 
+//Get max res Tumblr image (1280 as of version 1.0)
 if(/tumblr\.com/i.test(document.domain)){
 	//console.log("Tumblr!")
 	if((!/_1280\.(png|gif|jpg)$/.test(pageName))){ //so we don't constantly reload
 		document.location.href = urlName.replace(/_\d+\.(png|gif|jpg)$/, "_1280.$1")
 	}
-}else if(/pbs\.twimg\.com/i.test(document.domain)){
+}
+//Get max res twimg image (append:orig to image url)
+else if(/pbs\.twimg\.com/i.test(document.domain)){
 	//console.log("Twimg!")
 	//console.log(pageName)
 	if((!/:orig$/i.test(pageName))){
@@ -24,12 +27,13 @@ if(/tumblr\.com/i.test(document.domain)){
 }else{
 	console.log("Unknown site: " + document.domain)
 }*/
+//Get max res Instagram image (found in HTML data of post page)
 else{
-	console.log("Instagram!")
+	//console.log("Instagram!")
 	document.addEventListener("contextmenu", function(e){
 		document.location.href = document.querySelector('meta[property="og:image"]').content
 	}, false)
 	//window.open(largePicUrl, '_blank')
 	//var smallPicData
-	console.log(largePicUrl)
+	//console.log(largePicUrl)
 }
