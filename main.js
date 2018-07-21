@@ -1,10 +1,8 @@
 var urlName = document.URL
 var urlSplit = urlName.split('/')
-//console.log(document.location.host)
 var pageName = urlSplit.pop()
 var pageSplit = pageName.split('.')
 var fileType = pageSplit[pageSplit.length-1]
-//console.log(fileType)
 
 if(/tumblr\.com/i.test(document.domain)){
 	//console.log("Tumblr!")
@@ -35,16 +33,3 @@ else{
 	//var smallPicData
 	console.log(largePicUrl)
 }
-
-/*
-https://scontent-ort2-1.cdninstagram.com/vp/00e69570a1523bfd95c61671fbc88359/5BCA667C/t51.2885-15/e35/37286097_2137230119825075_5749275662313586688_n.jpg
-
-https://scontent-ort2-1.cdninstagram.com/vp/e893bb436a655f294fbb177452fe7214/5BEFB916/t51.2885-15/sh0.08/e35/p640x640/37286097_2137230119825075_5749275662313586688_n.jpg
-
-
-https://scontent-ort2-1.cdninstagram.com/vp/e12dc580dd5e2b29dcc7716bc849bc93/5BCE6D31/t51.2885-15/sh0.08/e35/p640x640/36160969_177941356399648_5526106855215988736_n.jpg
-
-https://scontent-ort2-1.cdninstagram.com/vp/06e3f2771c3d031bd1d356f0c13ca394/5BD686C7/t51.2885-15/e35/36160969_177941356399648_5526106855215988736_n.jpg
-*/
-
-//instagram
