@@ -28,7 +28,7 @@ if(/tumblr\.com/i.test(document.domain)){
 }*/
 else{
 	console.log("Instagram!")
-	document.addEventListener("dblclick", function(e){
+	document.addEventListener("contextmenu", function(e){
 		document.location.href = document.querySelector('meta[property="og:image"]').content
 	}, false)
 	//window.open(largePicUrl, '_blank')
