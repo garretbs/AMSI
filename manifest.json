@@ -14,7 +14,7 @@
 					"*://*.pbs.twimg.com/*.jpg",
 					"*://*.instagram.com/p/*"
 				],
-      "js": ["main.js"]
+      "js": ["amsi.js"]
     }
   ]
 
