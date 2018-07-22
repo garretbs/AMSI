@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Automatic Max Size Image",
-  "version": "1.0",
+  "version": "1.1",
 
   "description": "Automatically gets the largest size image from supported websites",
 
@@ -10,8 +10,8 @@
       "matches": [  "*://*.media.tumblr.com/*/tumblr_*_*.gif",
 					"*://*.media.tumblr.com/*/tumblr_*_*.jpg",
 					"*://*.media.tumblr.com/*/tumblr_*_*.png",
-					"*://*.pbs.twimg.com/*.png",
-					"*://*.pbs.twimg.com/*.jpg",
+					"*://*.pbs.twimg.com/*.png*",
+					"*://*.pbs.twimg.com/*.jpg*",
 					"*://*.instagram.com/p/*"
 				],
       "js": ["amsi.js"]
