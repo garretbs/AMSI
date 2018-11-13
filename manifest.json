@@ -12,6 +12,7 @@
 					"*://*.media.tumblr.com/*/tumblr_*_*.png",
 					"*://*.pbs.twimg.com/*.png*",
 					"*://*.pbs.twimg.com/*.jpg*",
+					"*://*.ytimg.com/vi/*/*.jpg*",
 					"*://*.instagram.com/p/*"
 				],
       "js": ["amsi.js"]

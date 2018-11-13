@@ -6,10 +6,15 @@ var pageName = urlSplit.pop()
 
 //Get max res Tumblr image (1280 as of version 1.0)
 //console.log = function(){}
+
+function replaceImage(newImageUrl){
+	document.location.href = newImageUrl
+}
+
 if(/tumblr\.com/i.test(document.domain)){
 	console.log("Tumblr!")
 	if((!/_1280\.(png|gif|jpg)$/.test(pageName))){ //so we don't constantly reload
-		document.location.href = urlName.replace(/_\d+\.(png|gif|jpg)$/, "_1280.$1")
+		replaceImage(urlName.replace(/_\d+\.(png|gif|jpg)$/, "_1280.$1"))
 	}
 }
 //Get max res twimg image
@@ -19,15 +24,24 @@ else if(/pbs\.twimg\.com/i.test(document.domain)){
 		console.log("Profile image")
 		if(/_\d+x\d+/.test(pageName)){
 			urlName = urlName.replace(/_\d+x\d+/i, "")
-			document.location.href = urlName
+			replaceImage(urlName)
 		}
 	}else if((!/:orig$/i.test(pageName))){ //if not already an :orig image
 		console.log("Regular image")
 		urlName = urlName.replace(/:large$/i, "")
 		urlName += ":orig"
-		document.location.href = urlName
+		replaceImage(urlName)
 	}else{
 		console.log("Unknown twimg image type?")
+	}
+}
+//Get max res ytimg thumbnail
+else if(/i\.ytimg\.com/i.test(document.domain)){
+	console.log("ytimg thumbnail")
+	if((!/maxresdefault.jpg$/i.test(pageName))){ //if not already a maxresdefault.jpg
+		console.log("Regular image")
+		urlName = urlName.replace(/hqdefault.jpg(.*)$/i, "maxresdefault.jpg")
+		replaceImage(urlName)
 	}
 }
 //Get max res instagram image when right click
@@ -37,7 +51,7 @@ else if(/instagram\.com/i.test(urlName)){
 	//large image is <meta property="og:image" content="large_image_url" />
 	//console.log("Instagram!")
 	document.addEventListener("contextmenu", function(e){
-		document.location.href = document.querySelector('meta[property="og:image"]').content
+		replaceImage(document.querySelector('meta[property="og:image"]').content)
 	}, false)
 	//window.open(largePicUrl, '_blank')
 	//var smallPicData
