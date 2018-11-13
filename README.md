@@ -7,4 +7,4 @@ Plug and play. Automatic for Tumblr and Twitter. For Instagram, you must be on a
 ## Todo
 * Make Instagram image fetching better
 * Reddit support, others?
-* Replace images natively
+* Replace images natively (max size GIFs on Tumblr are sometimes not animated when lower res versions are)
