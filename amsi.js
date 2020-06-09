@@ -1,11 +1,6 @@
 var urlName = document.URL
 var urlSplit = urlName.split('/')
 var pageName = urlSplit.pop()
-//var pageSplit = pageName.split('.')
-//var fileType = pageSplit[pageSplit.length-1]
-
-//Get max res Tumblr image (1280 as of version 1.0)
-//console.log = function(){}
 
 function replaceImage(newImageUrl){
 	document.location.href = newImageUrl
@@ -26,6 +21,11 @@ else if(/pbs\.twimg\.com/i.test(document.domain)){
 			urlName = urlName.replace(/_\d+x\d+/i, "")
 			replaceImage(urlName)
 		}
+	}
+	else if(/\?format=[A-Za-z]+.*/.test(urlName)){ // New UI images
+		console.log("New UI image")
+		urlName = urlName.replace(/\?format=([A-Za-z]+).*/, ".$1:orig")
+		replaceImage(urlName)
 	}else if((!/:orig$/i.test(pageName))){ //if not already an :orig image
 		console.log("Regular image")
 		urlName = urlName.replace(/:large$/i, "")
@@ -47,15 +47,12 @@ else if(/i\.ytimg\.com/i.test(document.domain)){
 //Get max res instagram image when right click
 else if(/instagram\.com/i.test(urlName)){
 	console.log("Instagram!")
-	//small image starts with "display_resources":[{"src":"small_image_url",
-	//large image is <meta property="og:image" content="large_image_url" />
-	//console.log("Instagram!")
+	const displayUrl = /\"display_url\":\"([^"]+)\"/
+	let imageUrl = displayUrl.exec(document.body.outerHTML)[1]
+	imageUrl = imageUrl.split("\\u0026").join("&")
 	document.addEventListener("contextmenu", function(e){
-		replaceImage(document.querySelector('meta[property="og:image"]').content)
+		replaceImage(imageUrl)
 	}, false)
-	//window.open(largePicUrl, '_blank')
-	//var smallPicData
-	//console.log(largePicUrl)
 }else{
 	console.log("Unknown site: " + document.domain)
 }
