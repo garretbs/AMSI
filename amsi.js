@@ -53,6 +53,12 @@ else if(/instagram\.com/i.test(urlName)){
 	document.addEventListener("contextmenu", function(e){
 		replaceImage(imageUrl)
 	}, false)
+}else if (/cdn.okccdn.com/i.test(urlName)){
+	console.log("OK Cupid CDN")
+	if(/400x400/i.test(urlName)){
+		urlName = urlName.replace(/400x400\/400x400\/([^/])+\/([^/]+)/i, "$2/$2/$1/$2")
+		replaceImage(urlName)
+	}
 }else{
 	console.log("Unknown site: " + document.domain)
 }

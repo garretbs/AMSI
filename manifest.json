@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Automatic Max Size Image",
-  "version": "1.3",
+  "version": "1.4",
 
   "description": "Automatically gets the largest size image from supported websites",
 
@@ -13,7 +13,8 @@
 					"*://*.pbs.twimg.com/*png*",
 					"*://*.pbs.twimg.com/*jpg*",
 					"*://*.ytimg.com/vi/*/*.jpg*",
-					"*://*.instagram.com/p/*"
+					"*://*.instagram.com/p/*",
+					"*://*.okccdn.com/*"
 				],
       "js": ["amsi.js"]
     }
