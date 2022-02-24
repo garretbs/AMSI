@@ -47,7 +47,7 @@ else if(/i\.ytimg\.com/i.test(document.domain)){
 //Get max res instagram image when right click
 else if(/instagram\.com/i.test(urlName)){
 	console.log("Instagram!")
-	const displayUrl = /\"display_url\":\"([^"]+)\"/
+	const displayUrl = /\{\"candidates\":\[\{\"width":\d+,\"height\":\d+,\"url\":\"([^"]+)\"\}/
 	let imageUrl = displayUrl.exec(document.body.outerHTML)[1]
 	imageUrl = imageUrl.split("\\u0026").join("&")
 	document.addEventListener("contextmenu", function(e){
