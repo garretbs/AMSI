@@ -47,11 +47,29 @@ else if(/i\.ytimg\.com/i.test(document.domain)){
 //Get max res instagram image when right click
 else if(/instagram\.com/i.test(urlName)){
 	console.log("Instagram!")
-	const displayUrl = /\{\"candidates\":\[\{\"width":\d+,\"height\":\d+,\"url\":\"([^"]+)\"\}/
-	let imageUrl = displayUrl.exec(document.body.outerHTML)[1]
-	imageUrl = imageUrl.split("\\u0026").join("&")
-	document.addEventListener("contextmenu", function(e){
-		replaceImage(imageUrl)
+	
+	const urlRegex = /\{\"candidates\":\[\{\"width":\d+,\"height\":\d+,\"url\":\"([^"]+)\"\}/
+	// Must match above, plus global flag
+	const globalUrlRegex = /\{\"candidates\":\[\{\"width":\d+,\"height\":\d+,\"url\":\"([^"]+)\"\}/g
+	let imageUrls = document.body.outerHTML.match(globalUrlRegex)
+	let linkNav = `<header style="position: absolute; top:0; background-color: #111111; width: 100%; text-align: center; z-index: 9999; padding-bottom: 1em; padding-top: 1em;">`
+	let index = 1;
+	imageUrls.forEach(imageUrl => {
+			let urlMatch = urlRegex.exec(imageUrl)[1];
+			urlMatch = urlMatch.split("\\u0026").join("&");
+			linkNav += `<a href="${urlMatch}" target="_blank">Click here to open image ${index++}</a>`;
+		}
+	)
+	linkNav += `</header>`
+	
+	// Let the user call the links manually because:
+	// 	a) It's somewhat obstructive to the page's content
+	// 	b) Instagram will refuse to load if you muck with the page before it's done
+	let gotImageLinks = false;
+	document.addEventListener("contextmenu", function(e) {
+		if(gotImageLinks) return;
+		document.body.outerHTML += linkNav
+		gotImageLinks = true;
 	}, false)
 }else if (/cdn.okccdn.com/i.test(urlName)){
 	console.log("OK Cupid CDN")
