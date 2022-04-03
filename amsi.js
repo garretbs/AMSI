@@ -6,6 +6,18 @@ function replaceImage(newImageUrl){
 	document.location.href = newImageUrl
 }
 
+function startNav() {
+	return `<header style="position: absolute; top:0; background-color: #111111; width: 100%; text-align: center; z-index: 9999; padding-bottom: 1em; padding-top: 1em;">`;
+}
+
+function addNavLink(url, text) {
+	return `<a href="${url}" target="_blank" style="color: white;">${text}</a>`
+}
+
+function closeNav() {
+	return "</header>";
+}
+
 if(/tumblr\.com/i.test(document.domain)){
 	console.log("Tumblr!")
 	if((!/_1280\.(png|gif|jpg)$/.test(pageName))){ //so we don't constantly reload
@@ -48,28 +60,37 @@ else if(/i\.ytimg\.com/i.test(document.domain)){
 else if(/instagram\.com/i.test(urlName)){
 	console.log("Instagram!")
 	
-	const urlRegex = /\{\"candidates\":\[\{\"width":\d+,\"height\":\d+,\"url\":\"([^"]+)\"\}/
-	// Must match above, plus global flag
-	const globalUrlRegex = /\{\"candidates\":\[\{\"width":\d+,\"height\":\d+,\"url\":\"([^"]+)\"\}/g
-	let imageUrls = document.body.outerHTML.match(globalUrlRegex)
-	let linkNav = `<header style="position: absolute; top:0; background-color: #111111; width: 100%; text-align: center; z-index: 9999; padding-bottom: 1em; padding-top: 1em;">`
-	let index = 1;
-	imageUrls.forEach(imageUrl => {
-			let urlMatch = urlRegex.exec(imageUrl)[1];
-			urlMatch = urlMatch.split("\\u0026").join("&");
-			linkNav += `<a href="${urlMatch}" target="_blank">Click here to open image ${index++}</a>`;
-		}
-	)
-	linkNav += `</header>`
+	const imageRegex = /\{\"candidates\":\[\{\"width":\d+,\"height\":\d+,\"url\":\"([^"]+)\"\}/
+	const globalImageRegex = new RegExp(imageRegex.source, "g");
+	
+	const videoRegex = /\"video_versions\":\[\{\"type":\d+,\"width":\d+,\"height\":\d+,\"url\":\"([^"]+)\"/
+	let linkNav = startNav();
+	let videoUrl = videoRegex.exec(document.body.outerHTML);
+	// Video exists, so get the link for that
+	if(videoUrl) {
+		videoUrl = videoUrl[1].split("\\u0026").join("&");
+		linkNav += addNavLink(videoUrl, "Click here to open video");
+	} else {
+		// Otherwise fetch the image(s)
+		let imageUrls = document.body.outerHTML.match(globalImageRegex);
+		let index = 1;
+		imageUrls.forEach(imageUrl => {
+				let urlMatch = imageRegex.exec(imageUrl)[1];
+				urlMatch = urlMatch.split("\\u0026").join("&");
+				linkNav += addNavLink(urlMatch, `Click here to open image ${index++}`);
+			}
+		)
+	}
+	linkNav += closeNav();
 	
 	// Let the user call the links manually because:
 	// 	a) It's somewhat obstructive to the page's content
 	// 	b) Instagram will refuse to load if you muck with the page before it's done
-	let gotImageLinks = false;
+	let gotLinks = false;
 	document.addEventListener("contextmenu", function(e) {
-		if(gotImageLinks) return;
+		if(gotLinks) return;
 		document.body.outerHTML += linkNav
-		gotImageLinks = true;
+		gotLinks = true;
 	}, false)
 }else if (/cdn.okccdn.com/i.test(urlName)){
 	console.log("OK Cupid CDN")
@@ -77,6 +98,23 @@ else if(/instagram\.com/i.test(urlName)){
 		urlName = urlName.replace(/400x400\/400x400\/([^/])+\/([^/]+)/i, "$2/$2/$1/$2")
 		replaceImage(urlName)
 	}
+}else if (/tiktok.com/i.test(urlName)){
+	console.log("Tiktok video");
+	
+	const videoRegex = /"downloadAddr":"([^"]+)"/
+	const videoLink = videoRegex.exec(document.body.outerHTML)[1].replace(/\\u002F/ig, "\\/");
+	
+	let linkNav = startNav();
+	linkNav += addNavLink(videoLink, "Click here to open video");
+	linkNav += closeNav();
+	
+	let gotVideoLink = false;
+	document.addEventListener("contextmenu", function(e) {
+		if(gotVideoLink) return;
+		document.body.outerHTML += linkNav
+		gotVideoLink = true;
+	}, false)
+	
 }else{
 	console.log("Unknown site: " + document.domain)
 }
