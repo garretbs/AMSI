@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Automatic Max Size Image",
-  "version": "1.7",
+  "version": "1.8",
 
   "description": "Automatically gets the largest size image and video from supported websites",
 
@@ -15,7 +15,8 @@
 					"*://*.ytimg.com/vi/*/*.jpg*",
 					"*://*.instagram.com/p/*",
 					"*://*.okccdn.com/*",
-					"*://*.tiktok.com/*/video/*"
+					"*://*.tiktok.com/*/video/*",
+					"*://*.redd.it/*"
 				],
       "js": ["amsi.js"]
     }

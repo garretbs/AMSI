@@ -115,6 +115,13 @@ else if(/instagram\.com/i.test(urlName)){
 		gotVideoLink = true;
 	}, false)
 	
+}else if (/redd\.it/i.test(urlName)){
+	console.log("Reddit");
+	if((!/i\.redd\.it\/.*[^.]+\.(png|gif|jpg)$/.test(urlName))) { // So we don't constantly reload
+		urlName = urlName.replace("preview", "i");
+		urlName = urlName.replace(/\/(([^.])+\.(png|gif|jpg)).*/, "\/$1")
+		replaceImage(urlName)
+	}
 }else{
 	console.log("Unknown site: " + document.domain)
 }
