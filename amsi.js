@@ -64,16 +64,21 @@ else if(/instagram\.com/i.test(urlName)){
 	const globalImageRegex = new RegExp(imageRegex.source, "g");
 	
 	const videoRegex = /\"video_versions\":\[\{\"type":\d+,\"width":\d+,\"height\":\d+,\"url\":\"([^"]+)\"/
+	const globalVideoRegex = new RegExp(videoRegex.source, "g");
 	let linkNav = startNav();
-	let videoUrl = videoRegex.exec(document.body.outerHTML);
+	let index = 1;
 	// Video exists, so get the link for that
-	if(videoUrl) {
-		videoUrl = videoUrl[1].split("\\u0026").join("&");
-		linkNav += addNavLink(videoUrl, "Click here to open video");
+	if(videoRegex.exec(document.body.outerHTML)) {
+		let videoUrls = document.body.outerHTML.match(globalVideoRegex);
+		videoUrls.forEach(videoUrl => {
+				let urlMatch = videoRegex.exec(videoUrl)[1];
+				urlMatch = urlMatch.split("\\u0026").join("&");
+				linkNav += addNavLink(urlMatch, `Click here to open video ${index++}`);
+			}
+		)
 	} else {
 		// Otherwise fetch the image(s)
 		let imageUrls = document.body.outerHTML.match(globalImageRegex);
-		let index = 1;
 		imageUrls.forEach(imageUrl => {
 				let urlMatch = imageRegex.exec(imageUrl)[1];
 				urlMatch = urlMatch.split("\\u0026").join("&");
