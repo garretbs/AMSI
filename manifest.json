@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Automatic Max Size Image",
-  "version": "1.10",
+  "version": "1.10.1",
 
   "description": "Automatically gets the largest size image and video from supported websites",
 

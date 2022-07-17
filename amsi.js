@@ -76,8 +76,10 @@ else if(/instagram\.com/i.test(urlName)){
 		}else if(!nextButtonElement) {
 			resultsIndex = results.length - 1;
 		} else {
-			resultsIndex = 1;
+			resultsIndex = results.length - 2;
 		}
+		console.log(resultsIndex);
+		console.log(results);
 		open(results[resultsIndex].src, '_blank');
 	};
 
