@@ -58,45 +58,50 @@ else if(/i\.ytimg\.com/i.test(document.domain)){
 }
 //Get max res instagram image when right click
 else if(/instagram\.com/i.test(urlName)){
-	console.log("Instagram!")
-	
-	const imageRegex = /\{\"candidates\":\[\{\"width":\d+,\"height\":\d+,\"url\":\"([^"]+)\"\}/
-	const globalImageRegex = new RegExp(imageRegex.source, "g");
-	
-	const videoRegex = /\"video_versions\":\[\{\"type":\d+,\"width":\d+,\"height\":\d+,\"url\":\"([^"]+)\"/
-	const globalVideoRegex = new RegExp(videoRegex.source, "g");
-	let linkNav = startNav();
-	let index = 1;
-	// Video exists, so get the link for that
-	if(videoRegex.exec(document.body.outerHTML)) {
-		let videoUrls = document.body.outerHTML.match(globalVideoRegex);
-		videoUrls.forEach(videoUrl => {
-				let urlMatch = videoRegex.exec(videoUrl)[1];
-				urlMatch = urlMatch.split("\\u0026").join("&");
-				linkNav += addNavLink(urlMatch, `Click here to open video ${index++}`);
+	console.log("Instagram!");
+	let mediaContainer = null;
+	let downloadButton = document.createElement('button');
+	downloadButton.innerHTML = "Download";
+	downloadButton.onclick = function() {
+		// Go through children until img/video found
+		let results = [];
+		const getMediaElement = function(node) {
+			if (node.nodeName === 'IMG' || node.nodeName === 'VIDEO') {
+				results.push(node);
+				return;
 			}
-		)
-	} else {
-		// Otherwise fetch the image(s)
-		let imageUrls = document.body.outerHTML.match(globalImageRegex);
-		imageUrls.forEach(imageUrl => {
-				let urlMatch = imageRegex.exec(imageUrl)[1];
-				urlMatch = urlMatch.split("\\u0026").join("&");
-				linkNav += addNavLink(urlMatch, `Click here to open image ${index++}`);
+			for(let i = 0; i < node.children.length; i++) {
+				getMediaElement(node.children[i]);
 			}
-		)
+		};
+		getMediaElement(mediaContainer);
+
+		// There can be up to three media found: previous, current, next.		
+		// If there is no back button, take the first
+		// Else if there is no next button, take the last
+		// Otherwise, take the middle
+		let resultsIndex = -1;
+		let backButtonElement = document.querySelector('[aria-label="Go Back"]');
+		let nextButtonElement = document.querySelector('[aria-label="Next"]');
+		if(!backButtonElement) {
+			resultsIndex = 0;
+		}else if(!nextButtonElement) {
+			resultsIndex = results.length - 1;
+		} else {
+			resultsIndex = 1;
+		}
+		open(results[resultsIndex].src, '_blank');
+	};
+
+	let currentUrl = null;
+	function checkForMedia() {
+		mediaContainer = document.evaluate('/html/body/div[1]/div/div[1]/div/div[1]/div/div/div/div[1]/div[1]/section/main/div[1]/div[1]/article/div/div[1]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE).snapshotItem(0);
+		// If there is no media container div, or we're still on the same page, don't add the download button
+		if(!mediaContainer || window.location.href === currentUrl) return;
+		currentUrl = window.location.href;
+		mediaContainer.append(downloadButton);
 	}
-	linkNav += closeNav();
-	
-	// Let the user call the links manually because:
-	// 	a) It's somewhat obstructive to the page's content
-	// 	b) Instagram will refuse to load if you muck with the page before it's done
-	let gotLinks = false;
-	document.addEventListener("contextmenu", function(e) {
-		if(gotLinks) return;
-		document.body.outerHTML += linkNav
-		gotLinks = true;
-	}, false)
+	setInterval(checkForMedia, 1000);
 }else if (/cdn.okccdn.com/i.test(urlName)){
 	console.log("OK Cupid CDN")
 	if(/400x400/i.test(urlName)){
@@ -105,20 +110,36 @@ else if(/instagram\.com/i.test(urlName)){
 	}
 }else if (/tiktok.com/i.test(urlName)){
 	console.log("Tiktok video");
+	let videoSource = null;
+	const getVideoElement = function(node) {
+		if (node.nodeName === 'VIDEO') {
+			videoSource = node.src;
+			return node.src;
+		}
+		for(let i = 0; i < node.children.length; i++) {
+			if(getVideoElement(node.children[i])) break;
+		}
+		return null;
+	};
 	
-	const videoRegex = /"downloadAddr":"([^"]+)"/
-	const videoLink = videoRegex.exec(document.body.outerHTML)[1].replace(/\\u002F/ig, "\\/");
-	
-	let linkNav = startNav();
-	linkNav += addNavLink(videoLink, "Click here to open video");
-	linkNav += closeNav();
-	
-	let gotVideoLink = false;
-	document.addEventListener("contextmenu", function(e) {
-		if(gotVideoLink) return;
-		document.body.outerHTML += linkNav
-		gotVideoLink = true;
-	}, false)
+	let downloadButton = document.createElement('button');
+	downloadButton.innerHTML = "Download";
+	downloadButton.onclick = function() {
+		getVideoElement(document);
+		open(videoSource, '_blank');
+	};
+
+	let currentUrl = null;
+	const videoControlsXPath = '/html/body/div[2]/div[2]/div[2]/div[1]/div[3]/div[1]/div[1]/div[3]';
+	let videoControlsContainer = null;
+	function checkForVideo() {
+		videoControlsContainer = document.evaluate(videoControlsXPath, document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE).snapshotItem(0);
+		// If there is no video container div, or we're still on the same page, don't add the download button
+		if(!videoControlsContainer || window.location.href === currentUrl) return;
+		currentUrl = window.location.href;
+		videoControlsContainer.append(downloadButton);
+	}
+	setInterval(checkForVideo, 1000);
 	
 }else if (/redd\.it/i.test(urlName)){
 	console.log("Reddit");
