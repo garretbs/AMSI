@@ -6,18 +6,6 @@ function replaceImage(newImageUrl){
 	document.location.href = newImageUrl
 }
 
-function startNav() {
-	return `<header style="position: absolute; top:0; background-color: #111111; width: 100%; text-align: center; z-index: 9999; padding-bottom: 1em; padding-top: 1em;">`;
-}
-
-function addNavLink(url, text) {
-	return `<a href="${url}" target="_blank" style="color: white;">${text}</a>`
-}
-
-function closeNav() {
-	return "</header>";
-}
-
 if(/tumblr\.com/i.test(document.domain)){
 	console.log("Tumblr!")
 	if((!/_1280\.(png|gif|jpg)$/.test(pageName))){ //so we don't constantly reload
