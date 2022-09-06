@@ -85,7 +85,7 @@ else if(/instagram\.com/i.test(urlName)){
 
 	let currentUrl = null;
 	function checkForMedia() {
-		mediaContainer = document.evaluate('/html/body/div[1]/div/div[1]/div/div[1]/div/div/div/div[1]/div[1]/section/main/div[1]/div[1]/article/div/div[1]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE).snapshotItem(0);
+		mediaContainer = document.evaluate('//article/div/div[1]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE).snapshotItem(0);
 		// If there is no media container div, or we're still on the same page, don't add the download button
 		if(!mediaContainer || window.location.href === currentUrl) return;
 		currentUrl = window.location.href;
