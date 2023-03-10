@@ -71,12 +71,10 @@ else if(/instagram\.com/i.test(urlName)){
 		let resultsIndex = -1;
 		let backButtonElement = document.querySelector('[aria-label="Go Back"]');
 		let nextButtonElement = document.querySelector('[aria-label="Next"]');
-		if(!backButtonElement) {
-			resultsIndex = 0;
-		}else if(!nextButtonElement) {
-			resultsIndex = results.length - 1;
+		if(backButtonElement) {
+			resultsIndex = 1;
 		} else {
-			resultsIndex = results.length - 2;
+			resultsIndex = 0;
 		}
 		console.log(resultsIndex);
 		console.log(results);
@@ -85,7 +83,7 @@ else if(/instagram\.com/i.test(urlName)){
 
 	let currentUrl = null;
 	function checkForMedia() {
-		mediaContainer = document.evaluate('//article/div/div[1]', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE).snapshotItem(0);
+		mediaContainer = document.evaluate('//section/main/div/div', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE).snapshotItem(0);
 		// If there is no media container div, or we're still on the same page, don't add the download button
 		if(!mediaContainer || window.location.href === currentUrl) return;
 		currentUrl = window.location.href;
@@ -120,7 +118,7 @@ else if(/instagram\.com/i.test(urlName)){
 	};
 
 	let currentUrl = null;
-	const videoControlsXPath = '/html/body/div[2]/div[2]/div[2]/div[1]/div[3]/div[1]/div[1]/div[3]';
+	const videoControlsXPath = '/html/body/div[2]/div[2]/div[2]/div/div[2]/div[1]/div[1]/div[1]/div[5]/div[2]/div[2]';
 	let videoControlsContainer = null;
 	function checkForVideo() {
 		videoControlsContainer = document.evaluate(videoControlsXPath, document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE).snapshotItem(0);
