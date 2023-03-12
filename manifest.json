@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
-  "name": "Automatic Max Size Image",
-  "version": "1.10.3",
+  "name": "Automatic Media Selection Integration",
+  "version": "2.0",
 
   "description": "Automatically gets the largest size image and video from supported websites",
 
@@ -12,14 +12,48 @@
 					"*://*.media.tumblr.com/*/tumblr_*_*.png",
 					"*://*.pbs.twimg.com/*png*",
 					"*://*.pbs.twimg.com/*jpg*",
+					"*://*.twimg.com/*",
 					"*://*.ytimg.com/vi/*/*.jpg*",
-					"*://*.instagram.com/p/*",
 					"*://*.okccdn.com/*",
-					"*://*.tiktok.com/*/video/*",
 					"*://*.redd.it/*"
 				],
-      "js": ["amsi.js"]
-    }
+      "js": [
+		"main.js",
+		"amsi.js"
+	  ]
+    },
+	{
+		"matches": [
+					"*://*.twitter.com/*/status/*"
+		],
+      "js": [
+		  "main.js",
+		  "twitter.js"
+	  ]
+	},
+	{
+		"matches": [
+					"*://*.tiktok.com/*/video/*"
+		],
+      "js": [
+		  "main.js",
+		  "tiktok.js"
+	  ]
+	},
+	{
+		"matches": [
+					"*://*.instagram.com/p/*"
+		],
+      "js": [
+		  "main.js",
+		  "instagram.js"
+	  ]
+	}
+  ],
+  
+  "permissions": [
+    "https://twitter.com/*",
+    "https://abs.twimg.com/*"
   ]
 
 }
