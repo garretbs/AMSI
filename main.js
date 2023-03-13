@@ -5,11 +5,13 @@ function replaceImage(newImageUrl){
 	document.location.href = newImageUrl
 }
 
-async function sendRequest(url, method, headers = {}){
+async function sendRequest(url, method, headers = {}) {
 	const response = await fetch(url, {
 		method: method,
 		headers: headers
-	}).then((res) => res.text());
+	}).then((res) => res.text()).catch(error => {
+		console.error(error);
+	});
 	return response;
 }
 

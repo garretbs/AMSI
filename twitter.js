@@ -1,17 +1,27 @@
 const ACTIVATE_JSON_URL = 'https://api.twitter.com/1.1/guest/activate.json';
 const VIDEO_URL = 'https://twitter.com/i/videos/tweet/';
-const VIDEO_JSON_URL = 'https://api.twitter.com/1.1/statuses/show.json?id=';
+const VIDEO_JSON_URL = 'https://api.twitter.com/1.1/statuses/show.json?id=<number>';
+const VIDEO_JSON_URL2 = 'https://api.twitter.com/2/timeline/conversation/<number>.json';
 const CSRF_COOKIE_NAME = 'ct0';
 const VIDEO_XPATH = '//video';
-const headers = { };
+// These headers are not actually necessary for 1.1, but may be needed for v2.
+const headers = {
+	'x-twitter-auth-type': 'OAuth2Session',
+	'x-twitter-active-user': 'yes',
+	'Content-Type': 'application/x-www-form-urlencoded'
+};
 
 function getVideo() {
-	sendRequest(VIDEO_JSON_URL + pageName, 'GET', headers).then((videoInfo) => {
+	// This v2 API endpoint does work, but it requires a developer bearer token. The token obtained from the guest
+	// activate JSON will not suffice.
+	sendRequest(VIDEO_JSON_URL.replace(/<number>/, pageName), 'GET', headers).then((videoInfo) => {
 		// TODO: Handle multiple media tweets. extended_entities does not appear to exist for those.
 		// It may be the case that the API does not have a pre-existing combined MP4 and instead assembles the m3u8
 		// and m4s chunks together on the fly.
 		// The video XPath above does technically add a download button below the video on multi posts,
 		// but other elements can conceal it. Given that multi video does not work anyway, this is not a huge concern.
+		// If using API v2, the relevant information would be under: 
+		// videoInfo.globalObjects.tweets[pageName].extended_entities?.media[0]?.video_info?.variants
 		const videos = JSON.parse(videoInfo)?.extended_entities?.media[0]?.video_info?.variants;
 		if(videos) {
 			let maxVideo = null;
