@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Automatic Media Selection Integration",
-  "version": "2.0.1",
+  "version": "2.1.0",
 
   "description": "Automatically gets the largest size image and video from supported websites",
 
@@ -52,9 +52,15 @@
   ],
   
   "permissions": [
+    "storage",
     "https://twitter.com/*",
     "https://api.twitter.com/*",
     "https://abs.twimg.com/*"
-  ]
+  ],
+
+  "browser_action": {
+    "default_popup": "twitter_api.html"
+  }
+
 
 }

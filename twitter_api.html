@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>AMSI Settings</title>
+    <style>
+        body {
+            width: 200px;
+            max-width: 96%;
+            margin: 10px;
+            font-family: Helvetica, Sans-Serif;
+        }
+		
+		span {			
+			overflow: hidden;
+			white-space: nowrap;
+		}
+	</style>
+	</head>
+	<body>
+		<h5>Twitter API</h5>
+		<span>
+			<p>Version</p>
+			<input type="radio" id="1.1" name="apiVersion" value="1.1">
+			<label for="1.1">1.1</label><br>
+			<input type="radio" id="v2" name="apiVersion" value="v2">
+			<label for="v2">v2</label><br>
+			<span>Bearer <input id="twitterBearerToken"></input></span>
+		</span>
+		<button id="saveButton">Save</button>
+		<script type="text/javascript" src="settings.js"></script>
+	</body>
+
+</html>
