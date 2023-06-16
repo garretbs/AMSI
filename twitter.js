@@ -84,7 +84,7 @@ downloadButton.onclick = function () {
 function checkForMedia() {
 	mediaContainer = document.evaluate(VIDEO_XPATH, document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE).snapshotItem(0);
 	if(mediaContainer) {
-		getParentElement(mediaContainer, 11).append(downloadButton);
+		getParentElement(mediaContainer, 12).append(downloadButton);
 		browser.storage.local.get({
 			AMSI_TWITTER_API_VERSION: '1.1'
 			},
