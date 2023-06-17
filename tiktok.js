@@ -1,4 +1,4 @@
-const VIDEO_CONTROLS_XPATH = '/html/body/div[2]/div[2]/div[2]/div/div[2]/div[1]/div[1]/div[1]/div[5]/div[2]/div[2]';
+const VIDEO_CONTROLS_XPATH = '/html/body/div[1]/div[2]/div[2]/div/div[2]/div[1]/div[1]/div[1]/div[5]/div[2]/div[2]';
 
 let videoSource = null;
 const getVideoElement = function(node) {

@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Automatic Media Selection Integration",
-  "version": "2.2.1",
+  "version": "2.2.2",
 
   "description": "Automatically gets the largest size image and video from supported websites",
 
