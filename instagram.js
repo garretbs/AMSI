@@ -33,7 +33,13 @@ downloadButton.onclick = function() {
 	const currentMedia = results[resultsIndex];
 	if(currentMedia.nodeName === 'VIDEO') {
 		// I don't know of a great way to know which video URLs map to the current media, so just open all of them.
-		mediaObject.video.forEach(video => open(video.contentUrl, '_blank'));
+		mediaObject.forEach((object) => {
+			const video = object?.require?.[0]?.[3]?.[0]?.__bbox?.require?.[0]?.[3]?.[1]?.__bbox?.result?.data;
+			if(!video) return;
+
+			const url = video.xdt_api__v1__media__shortcode__web_info?.items[0].video_versions[0].url;
+			if (url) open(url, '_blank');
+		});
 	} else {
 		open(currentMedia.src, '_blank');
 	}
@@ -44,7 +50,10 @@ function checkForMedia() {
 	mediaContainer = document.evaluate('//section/main/div/div', document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE).snapshotItem(0);
 	// If there is no media container div, or we're still on the same page, don't add the download button
 	if(!mediaContainer || window.location.href === currentUrl) return;
-	mediaObject = JSON.parse(document.querySelector('[type="application/ld+json"]').textContent);
+
+	let objects = document.querySelectorAll('[type="application/json"]')
+	mediaObject = []
+	objects.forEach((object) => mediaObject.push(JSON.parse(object.textContent)));
 	currentUrl = window.location.href;
 	mediaContainer.append(downloadButton);
 }
