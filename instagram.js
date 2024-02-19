@@ -3,6 +3,39 @@ let mediaContainer = null;
 let mediaObjects = null;
 const downloadButton = document.createElement('button');
 downloadButton.innerHTML = 'Download';
+
+function openSingleMedia() {
+	let objects = document.querySelectorAll('[type="application/json"]')
+	mediaObjects = []
+	objects.forEach((object) => mediaObjects.push(JSON.parse(object.textContent)));
+
+	// Go through children until img/video found
+	let results = [];
+	const getMediaElement = function(node) {
+		if (node.nodeName === 'IMG' || node.nodeName === 'VIDEO') {
+			results.push(node);
+			return;
+		}
+		for(let i = 0; i < node.children.length; i++) {
+			getMediaElement(node.children[i]);
+		}
+	};
+	getMediaElement(mediaContainer);
+
+	const currentMedia = results[0];
+	if(currentMedia.nodeName === 'VIDEO') {
+		mediaObjects.forEach((object) => {
+			const video = object?.require?.[0]?.[3]?.[0]?.__bbox?.require?.[0]?.[3]?.[1]?.__bbox?.result?.data;
+			if(!video) return;
+
+			const url = video.xdt_api__v1__media__shortcode__web_info?.items[0].video_versions[0].url;
+			if (url) open(url, '_blank');
+		});
+	} else {
+		open(currentMedia.src, '_blank');
+	}
+}
+
 downloadButton.onclick = function() {
 
 	let carousel = null;
@@ -33,6 +66,9 @@ downloadButton.onclick = function() {
 			}
 		});
 	});
+	
+	// Not a carousel post, so scrape to find the individual item
+	if(!carousel) openSingleMedia();
 };
 
 let currentUrl = null;
