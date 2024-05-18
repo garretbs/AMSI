@@ -1,8 +1,8 @@
-const ACTIVATE_JSON_URL = 'https://api.twitter.com/1.1/guest/activate.json';
-const VIDEO_URL = 'https://twitter.com/i/videos/tweet/';
+const ACTIVATE_JSON_URL = 'https://api.x.com/1.1/guest/activate.json';
+const VIDEO_URL = 'https://x.com/i/videos/tweet/';
 const VIDEO_JSON_URL_SETTINGS = '?include_profile_interstitial_type=1&include_blocking=1&include_blocked_by=1&include_followed_by=1&include_want_retweets=1&include_mute_edge=1&include_can_dm=1&include_can_media_tag=1&skip_status=1&cards_platform=Web-12&include_cards=1&include_composer_source=true&include_ext_alt_text=true&include_reply_count=1&tweet_mode=extended&include_entities=true&include_user_entities=true&include_ext_media_color=true&include_ext_media_availability=true&send_error_codes=true&count=20&ext=mediaStats%2ChighlightedLabel%2CcameraMoment'
-const VIDEO_JSON_URL = 'https://api.twitter.com/1.1/statuses/show.json?id=<number>' + VIDEO_JSON_URL_SETTINGS;
-const VIDEO_JSON_URL2 = 'https://api.twitter.com/2/timeline/conversation/<number>.json' + VIDEO_JSON_URL_SETTINGS;
+const VIDEO_JSON_URL = 'https://api.x.com/1.1/statuses/show.json?id=<number>' + VIDEO_JSON_URL_SETTINGS;
+const VIDEO_JSON_URL2 = 'https://api.x.com/2/timeline/conversation/<number>.json' + VIDEO_JSON_URL_SETTINGS;
 const CSRF_COOKIE_NAME = 'ct0';
 const VIDEO_XPATH = '//video';
 // These headers are not actually necessary for 1.1, but may be needed for v2.

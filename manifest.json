@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Automatic Media Selection Integration",
-  "version": "2.3.1",
+  "version": "2.3.2",
 
   "description": "Automatically gets the largest size image and video from supported websites",
 
@@ -24,7 +24,8 @@
     },
 	{
 		"matches": [
-					"*://*.twitter.com/*/status/*"
+					"*://*.twitter.com/*/status/*",
+					"*://*.x.com/*/status/*"
 		],
       "js": [
 		  "main.js",
@@ -55,7 +56,9 @@
     "storage",
     "https://twitter.com/*",
     "https://api.twitter.com/*",
-    "https://abs.twimg.com/*"
+    "https://abs.twimg.com/*",
+    "https://x.com/*",
+    "https://api.x.com/*"
   ],
 
   "browser_action": {
