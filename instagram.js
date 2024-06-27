@@ -48,7 +48,7 @@ downloadButton.onclick = function() {
 
 		// TODO: This logic seems sound, but it seems like navigating to other pages in the same tab will result in
 		// stale data here...
-		const media = object?.require?.[0]?.[3]?.[0]?.__bbox?.require?.[0]?.[3]?.[1]?.__bbox.result?.data;
+		const media = object?.require?.[0]?.[3]?.[0]?.__bbox?.require?.[0]?.[3]?.[1]?.__bbox?.result?.data;
 		carousel = media?.xdt_api__v1__media__shortcode__web_info?.items[0].carousel_media;
 		if(!carousel) return;
 
