@@ -18,32 +18,28 @@ function getVideo() {
 	// activate JSON will not suffice.
 	let url = apiVersion == 'v2' ? VIDEO_JSON_URL2 : VIDEO_JSON_URL;
 	sendRequest(url.replace(/<number>/, pageName), 'GET', headers).then((videoInfo) => {
-		// TODO: Handle multiple media tweets. extended_entities does not appear to exist for those.
-		// It may be the case that the API does not have a pre-existing combined MP4 and instead assembles the m3u8
-		// and m4s chunks together on the fly.
-		// The video XPath above does technically add a download button below the video on multi posts,
-		// but other elements can conceal it. Given that multi video does not work anyway, this is not a huge concern.
-		let videos = null;
+		// TODO: Handle multiple media tweets with 1.1. It may be the case that the API does not have a pre-existing
+		// combined MP4 and instead assembles the m3u8 and m4s chunks together on the fly.
+		// Note that multiple videos can only be retrieved with v2.
+		let videoMedia = null;
 		if(apiVersion == 'v2') {
-			videos = JSON.parse(videoInfo)?.globalObjects.tweets[pageName].extended_entities?.media[0]?.video_info?.variants;
+			videoMedia = JSON.parse(videoInfo)?.globalObjects.tweets[pageName].extended_entities?.media;
 		} else {
-			videos = JSON.parse(videoInfo)?.extended_entities?.media[0]?.video_info?.variants;
+			videoMedia = JSON.parse(videoInfo)?.extended_entities?.media;
 		}
-		if(videos) {
-			let maxVideo = null;
-			if(videos.length == 1) {
-				// Only one video, so go ahead and open it
-				maxVideo = videos[0];
-			} else {
-			let maxBitrate = 0;
-				videos.forEach(function(video) {
-					if(video.bitrate && video.bitrate > maxBitrate) {
-						maxBitrate = video.bitrate;
-						maxVideo = video;
+		if(videoMedia) {
+			for(let videoMedium of videoMedia) {
+				let variants = videoMedium?.video_info?.variants;
+				let maxVariant = null;
+				let maxBitrate = 0;
+				variants.forEach(function(variant) {
+					if(variant.bitrate && variant.bitrate > maxBitrate) {
+						maxBitrate = variant.bitrate;
+						maxVariant = variant;
 					}
 				});
+				open(maxVariant.url, '_blank');
 			}
-			open(maxVideo.url, '_blank');
 		}
 		downloadButton.disabled = false;
 	});
@@ -84,7 +80,7 @@ downloadButton.onclick = function () {
 function checkForMedia() {
 	mediaContainer = document.evaluate(VIDEO_XPATH, document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE).snapshotItem(0);
 	if(mediaContainer) {
-		getParentElement(mediaContainer, 12).append(downloadButton);
+		getParentElement(mediaContainer, 13).append(downloadButton);
 		browser.storage.local.get({
 			AMSI_TWITTER_API_VERSION: '1.1'
 			},
